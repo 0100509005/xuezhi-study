@@ -1,0 +1,127 @@
+{
+  "calc-limits": {
+    "title": "OpenStax 微积分：函数极限",
+    "url": "https://openstax.org/books/calculus-volume-1/pages/2-2-the-limit-of-a-function",
+    "language": "英文"
+  },
+  "calc-laws": {
+    "title": "OpenStax 微积分：极限运算法则",
+    "url": "https://openstax.org/books/calculus-volume-1/pages/2-3-the-limit-laws",
+    "language": "英文"
+  },
+  "calc-derivative": {
+    "title": "OpenStax 微积分：导数的定义",
+    "url": "https://openstax.org/books/calculus-volume-1/pages/3-1-defining-the-derivative",
+    "language": "英文"
+  },
+  "calc-derivative-function": {
+    "title": "OpenStax 微积分：导函数与连续性",
+    "url": "https://openstax.org/books/calculus-volume-1/pages/3-2-the-derivative-as-a-function",
+    "language": "英文"
+  },
+  "linear-determinants": {
+    "title": "MIT 线性代数：行列式相关课程",
+    "url": "https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/resources/lecture-videos/",
+    "language": "英文"
+  },
+  "linear-transpose": {
+    "title": "MIT 线性代数：转置与矩阵课程",
+    "url": "https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/resources/lecture-videos/",
+    "language": "英文"
+  },
+  "chem-quantum": {
+    "title": "OpenStax 大学化学：量子理论与量子数",
+    "url": "https://openstax.org/books/chemistry-2e/pages/6-3-development-of-quantum-theory",
+    "language": "英文"
+  },
+  "chem-vapor": {
+    "title": "OpenStax 大学化学：相变与蒸气压",
+    "url": "https://openstax.org/books/chemistry-2e/pages/10-3-phase-transitions",
+    "language": "英文"
+  },
+  "chem-colligative": {
+    "title": "OpenStax 大学化学：溶液依数性",
+    "url": "https://openstax.org/books/chemistry/pages/11-4-colligative-properties",
+    "language": "英文"
+  },
+  "cs-c": {
+    "title": "Harvard CS50：C 语言与基本程序",
+    "url": "https://cs50.harvard.edu/x/2025/notes/1/",
+    "language": "英文"
+  },
+  "cs-arrays": {
+    "title": "Harvard CS50：编译与数组",
+    "url": "https://cs50.harvard.edu/x/2025/notes/2/",
+    "language": "英文"
+  },
+  "cs-pointers": {
+    "title": "Harvard CS50：内存与指针",
+    "url": "https://cs50.harvard.edu/college/2025/spring/notes/4/",
+    "language": "英文"
+  },
+  "video-calc": {
+    "title": "同济大学高等数学（一）· 选集按标题查找",
+    "url": "https://www.bilibili.com/video/BV1f741197YW/",
+    "language": "中文视频"
+  },
+  "video-det": {
+    "title": "宋浩线性代数 · 二三阶行列式",
+    "url": "https://www.bilibili.com/video/BV1h7pteyEww/?p=2",
+    "language": "中文视频"
+  },
+  "video-det-properties": {
+    "title": "宋浩线性代数 · 行列式的性质",
+    "url": "https://www.bilibili.com/video/BV1h7pteyEww/?p=5",
+    "language": "中文视频"
+  },
+  "video-cofactor": {
+    "title": "宋浩线性代数 · 按行（列）展开",
+    "url": "https://www.bilibili.com/video/BV1h7pteyEww/?p=6",
+    "language": "中文视频"
+  },
+  "video-cramer": {
+    "title": "宋浩线性代数 · 克莱姆法则",
+    "url": "https://www.bilibili.com/video/BV1h7pteyEww/?p=9",
+    "language": "中文视频"
+  },
+  "video-matrix": {
+    "title": "宋浩线性代数 · 矩阵的概念",
+    "url": "https://www.bilibili.com/video/BV1h7pteyEww/?p=10",
+    "language": "中文视频"
+  },
+  "video-matrix-add": {
+    "title": "宋浩线性代数 · 矩阵的加法、减法、数乘",
+    "url": "https://www.bilibili.com/video/BV1h7pteyEww/?p=11",
+    "language": "中文视频"
+  },
+  "video-matrix-product": {
+    "title": "宋浩线性代数 · 矩阵乘法",
+    "url": "https://www.bilibili.com/video/BV1h7pteyEww/?p=12",
+    "language": "中文视频"
+  },
+  "video-linear": {
+    "title": "宋浩线性代数 · 选集按标题查找",
+    "url": "https://www.bilibili.com/video/BV1h7pteyEww/",
+    "language": "中文视频"
+  },
+  "video-vectors": {
+    "title": "3Blue1Brown · 什么是向量",
+    "url": "https://www.youtube.com/watch?v=fNk_zzaMoSs",
+    "language": "英文视频（字幕以平台提供为准）"
+  },
+  "3b-vectors": {
+    "title": "3Blue1Brown：向量课程配套文字",
+    "url": "https://www.3blue1brown.com/lessons/vectors/",
+    "language": "英文图文"
+  },
+  "3b-span": {
+    "title": "3Blue1Brown：线性组合、张成与基的配套文字",
+    "url": "https://www.3blue1brown.com/lessons/span/",
+    "language": "英文图文"
+  },
+  "3b-eigen": {
+    "title": "3Blue1Brown：特征值和特征向量配套文字",
+    "url": "https://www.3blue1brown.com/lessons/eigenvalues/",
+    "language": "英文图文"
+  }
+}

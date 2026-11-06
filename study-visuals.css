@@ -1,0 +1,24 @@
+/* 图解区块：图、表与“怎么读”。与正文同色系，不抢练习的注意力。 */
+.study-visual{margin:26px 0;padding:22px 24px 24px;background:#fbfcf8;border:1px solid var(--line);border-left:4px solid var(--green);border-radius:12px}
+.study-visual .visual-kicker{margin:0 0 6px;font-size:11px;letter-spacing:2px;color:var(--green);font-weight:600}
+.study-visual .visual-title{font-size:19px;line-height:1.6;margin:0 0 14px;padding:0;border:0;color:var(--ink)}
+.visual-figure{margin:0 0 14px}
+.study-figure{display:block;width:100%;height:auto;max-height:380px;background:#fff;border:1px solid var(--line);border-radius:10px}
+.study-visual figcaption{display:block;margin-top:10px;font-size:13px;line-height:1.85;color:#4d5b54}
+.visual-read{background:#f1f5ec;border-radius:10px;padding:12px 16px 14px;margin-top:16px}
+.visual-read-title{margin:0 0 6px;font-size:12px;font-weight:700;color:var(--green);letter-spacing:1px}
+.visual-read ol{margin:0;padding-left:20px;font-size:13px;line-height:1.85}
+.visual-read li{margin:2px 0}
+.visual-table-wrap{margin:0}
+.visual-table{width:100%;border-collapse:collapse;font-size:13px;background:#fff}
+.visual-table caption{caption-side:top;text-align:left;font-size:12px;color:var(--muted);padding:0 0 8px}
+.visual-table th,.visual-table td{border-bottom:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top;line-height:1.7}
+.visual-table thead th{background:#eef3e9;color:var(--green);font-size:12px;white-space:nowrap}
+.visual-table tbody th{font-weight:600;color:var(--ink);white-space:nowrap}
+.visual-table td.ok{color:#17613a;font-weight:600}
+.visual-table td.no{color:#a03627;font-weight:600}
+.visual-table td.warn{color:#8a6a1f;font-weight:600}
+@media(max-width:720px){.study-visual{padding:16px 16px 18px}.study-figure{max-height:none}.visual-table th,.visual-table td{padding:8px 9px}}
+
+/* 网页版：没有桌面桥接时的占位按钮 */
+.web-only-note{opacity:.62;cursor:default;border-style:dashed;background:transparent;color:var(--muted)}
