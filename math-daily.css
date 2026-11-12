@@ -14,3 +14,20 @@
 .daily-options{display:grid;gap:8px}
 .daily-options .choice{text-align:left;width:100%}
 .daily-type .actions{margin-top:14px}
+
+/* 考察范围、难度与真题溯源 */
+.daily-scope{margin:0 0 22px}
+.daily-scope-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.daily-scope-head h2{margin:0;font-size:18px}
+.daily-scope-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px 18px;margin-bottom:14px}
+.daily-scope-item{display:flex;align-items:center;gap:8px;font-size:14px;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;cursor:pointer}
+.daily-scope-item input{width:16px;height:16px;margin:0}
+.daily-scope-item em{margin-left:auto;font-style:normal;font-size:11px;color:var(--muted)}
+.daily-scope-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.daily-trace{margin:0 0 12px;font-size:12px;color:#5d6b63;background:#f4f7ef;border-left:3px solid var(--accent);padding:6px 10px;border-radius:0 6px 6px 0;line-height:1.8}
+.daily-trace a{text-decoration:underline}
+.trace-label{color:var(--green);font-weight:600}
+.practice-trace{margin-top:16px;padding:12px 14px;border:1px dashed var(--line);border-radius:10px;background:#fbfcf8}
+.practice-trace strong{font-size:13px;color:var(--green)}
+.practice-trace ul{margin:8px 0 0;padding-left:18px;font-size:13px;line-height:1.9}
+.practice-trace a{text-decoration:underline}
