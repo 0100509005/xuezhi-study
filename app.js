@@ -14,12 +14,14 @@ try{
   state.practice=normalizePractice(saved.practice);
  }
 }catch{storageOK=false;}
-state.choiceMistakes=normalizeChoiceMistakes((()=>{try{return JSON.parse(localStorage.getItem('xuezhi-v1')||'null')?.choiceMistakes;}catch{return null;}})());
+const savedMistakeState=(()=>{try{return JSON.parse(localStorage.getItem('xuezhi-v1')||'null');}catch{return null;}})();
+state.choiceMistakes=normalizeChoiceMistakes(savedMistakeState?.choiceMistakes,savedMistakeState?.chemistryMistakesVersion!==1);
+state.chemistryMistakesVersion=1;
 function restoreChoiceBankRound(){
  try{
   const raw=JSON.parse(localStorage.getItem('xuezhi-v1')||'null')?.choiceBankRound;
   if(!raw||!Array.isArray(raw.items)||!raw.items.length||!raw.answers)return null;
-  const items=raw.items.filter(item=>item&&typeof item.key==='string'&&validPracticeQuestion(item.q));
+  const items=raw.items.filter(item=>item&&typeof item.key==='string'&&validMistakeQuestion(item.key,item.q));
   if(items.length!==raw.items.length||new Set(items.map(item=>item.key)).size!==items.length)return null;
   const answers=Object.create(null);
   for(const item of items){

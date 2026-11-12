@@ -36,7 +36,7 @@ function makePracticeSet(lessonId,seed,avoid=[]){
  if(!best)throw new Error('Could not create unique questions: '+lessonId);
  return{version:1,lessonId,...(lesson.mathStudy?{curriculumRevision:MATH_CURRICULUM_REVISION}:{}),seed:seed>>>0,id:lessonId+'-'+(seed>>>0).toString(36),questions:best.questions,answers:[null,null,null]};
 }
-function validPracticeQuestion(q){return q&&typeof q.question==='string'&&q.question.length<3000&&Array.isArray(q.options)&&q.options.length>=3&&q.options.length<=5&&q.options.every(o=>typeof o==='string'&&o.length<2000)&&new Set(q.options).size===q.options.length&&Number.isInteger(q.answer)&&q.answer>=0&&q.answer<q.options.length&&typeof q.explanation==='string'&&q.explanation.length<5000&&typeof q.key==='string';}
+function validPracticeQuestion(q,minOptions=3){return q&&typeof q.question==='string'&&q.question.length<3000&&Array.isArray(q.options)&&q.options.length>=minOptions&&q.options.length<=5&&q.options.every(o=>typeof o==='string'&&o.length<2000)&&new Set(q.options).size===q.options.length&&Number.isInteger(q.answer)&&q.answer>=0&&q.answer<q.options.length&&typeof q.explanation==='string'&&q.explanation.length<5000&&typeof q.key==='string';}
 function normalizeCofactorQuestion(id,q){
  if(!['cofactor','adjugate'].includes(id))return q;
  const fix=s=>typeof s==='string'?s.replace(/C([₀-₉ᵢⱼ]+)/g,'A$1'):s;
@@ -67,16 +67,28 @@ function trackChoice(key,q,choice){
   if(old.streak>=3)delete state.choiceMistakes[key];
  }
 }
-function normalizeChoiceMistakes(saved){
+function validMistakeQuestion(key,q){
+ return validPracticeQuestion(q,key.startsWith('chem:')?2:3);
+}
+function normalizeChoiceMistakes(saved,restoreMissedChemistry=false){
  const bank=Object.create(null);
  if(saved&&typeof saved==='object'){
   for(const [key,m] of Object.entries(saved)){
-   if(key.length<200&&m&&validPracticeQuestion(m.q)&&Number.isInteger(m.choice)&&m.choice>=0&&m.choice<m.q.options.length&&Number.isInteger(m.streak)&&m.streak>=0&&m.streak<3)bank[key]=m;
+   if(key.length<200&&m&&validMistakeQuestion(key,m.q)&&Number.isInteger(m.choice)&&m.choice>=0&&m.choice<m.q.options.length&&Number.isInteger(m.streak)&&m.streak>=0&&m.streak<3)bank[key]=m;
+  }
+  if(restoreMissedChemistry){
+   for(const q of CHEM_EXAM_QUESTIONS.filter(q=>!isChemChoice(q))){
+    const choice=state.examAnswers[q.id]?.choice;
+    const key='chem:'+q.id;
+    if(!bank[key]&&Number.isInteger(choice)&&choice>=0&&choice<q.options.length&&choice!==q.answer){
+     bank[key]={q:choiceSnapshot(q),choice,streak:0};
+    }
+   }
   }
   return bank;
  }
  for(const m of state.practice.mistakes)bank['practice:'+m.lessonId+':'+m.q.key]={q:m.q,choice:m.choice,streak:0};
- for(const [kind,questions,answers] of [['chem',CHEM_EXAM_QUESTIONS.filter(isChemChoice),state.examAnswers],['math',MATH_EXAM_QUESTIONS,state.mathAnswers],['single',ALL_ITEMS.filter(q=>Array.isArray(q.options)&&q.options.length>=3),state.answers]]){
+ for(const [kind,questions,answers] of [['chem',CHEM_EXAM_QUESTIONS,state.examAnswers],['math',MATH_EXAM_QUESTIONS,state.mathAnswers],['single',ALL_ITEMS.filter(q=>Array.isArray(q.options)&&q.options.length>=3),state.answers]]){
   for(const q of questions){
    const a=answers[q.id];
    if(a&&Number.isInteger(a.choice)&&a.choice>=0&&a.choice<q.options.length&&a.choice!==q.answer)bank[kind+':'+q.id]={q:choiceSnapshot(q),choice:a.choice,streak:0};
@@ -131,7 +143,7 @@ function canReviewMistake(key){
  if(kind==='chem'||kind==='math'){
   const questions=kind==='chem'?CHEM_EXAM_QUESTIONS:MATH_EXAM_QUESTIONS;
   const q=questions.find(q=>q.id===id);
-  if(q){
+  if(q&&(kind!=='chem'||isChemChoice(q))){
    const status=fixedRoundStatus(kind,q.paper);
    return !status.remaining&&!status.wrong.length;
   }

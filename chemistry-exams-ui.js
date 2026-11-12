@@ -75,7 +75,7 @@ function initChemExamEvents(){
  document.addEventListener('click',event=>{
   const answer=event.target.closest('[data-exam-choice]'),retry=event.target.closest('[data-exam-retry]');if(!answer&&!retry)return;
   const id=answer?.dataset.examQ||retry.dataset.examRetry,q=CHEM_EXAM_QUESTIONS.find(q=>q.id===id);if(!q)return;
-  if(answer){const choice=Number(answer.dataset.examChoice);if(state.examAnswers[id]||!Number.isInteger(choice)||choice<0||choice>=q.options.length)return;state.examAnswers[id]={choice};if(isChemChoice(q))trackChoice('chem:'+id,q,choice);}else if(!isChemChoice(q))delete state.examAnswers[id];else return;
+  if(answer){const choice=Number(answer.dataset.examChoice);if(state.examAnswers[id]||!Number.isInteger(choice)||choice<0||choice>=q.options.length)return;state.examAnswers[id]={choice};trackChoice('chem:'+id,q,choice);}else if(!isChemChoice(q))delete state.examAnswers[id];else return;
   save();document.getElementById('exam-q-'+id).outerHTML=examQuestionHTML(q);if(chemExamDrillRefresh)chemExamDrillRefresh();if(answer)document.getElementById('exam-feedback-'+id)?.focus({preventScroll:true});
  });
 }
