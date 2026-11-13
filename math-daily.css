@@ -31,3 +31,31 @@
 .practice-trace strong{font-size:13px;color:var(--green)}
 .practice-trace ul{margin:8px 0 0;padding-left:18px;font-size:13px;line-height:1.9}
 .practice-trace a{text-decoration:underline}
+
+/* 自适应难度与升降档提示 */
+.adaptive-pill{font-size:11px;font-weight:500;padding:2px 8px;border-radius:12px;margin-left:4px}
+.adaptive-pill.level-1{background:#e8f4ec;color:#236940;border:1px solid #c2e2cc}
+.adaptive-pill.level-2{background:#edf2e7;color:#336449;border:1px solid #d5decb}
+.adaptive-pill.level-3{background:#fdf1df;color:#925d19;border:1px solid #f2dbb3}
+
+.adaptive-shift-badge{display:flex;align-items:center;gap:8px;font-size:13px;padding:8px 12px;border-radius:6px;margin:10px 0 6px;line-height:1.6}
+.adaptive-shift-badge.up{background:#e8f6ed;color:#1e6a3c;border:1px solid #bfe7cc}
+.adaptive-shift-badge.down{background:#fdf4e8;color:#9b5c16;border:1px solid #f4dec0}
+.adaptive-shift-badge .shift-icon{font-size:14px}
+
+/* 期末高频考点速查手册 */
+.daily-cheatsheet{margin:0 0 22px;border:1px solid #dbe3d6;background:#fcfdfa}
+.daily-cheatsheet summary{cursor:pointer;font-size:15px;font-weight:600;color:var(--green);padding:4px 0}
+.cheatsheet-content{margin-top:14px}
+.cheatsheet-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:12px}
+.cheat-card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px;font-size:13px}
+.cheat-card h4{margin:0 0 8px;font-size:14px;color:var(--green);border-bottom:1px dashed var(--line);padding-bottom:5px}
+.cheat-card ul{margin:0;padding-left:16px;line-height:1.8;color:#45534c}
+.cheat-card em{color:#a2432a;font-style:normal;font-weight:600}
+
+
+/* 历年真题中心 */
+.paper-grid{display:grid;gap:14px;margin-top:16px}
+.paper-card{padding:18px 20px}
+.paper-card-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.paper-card .actions{margin:0}

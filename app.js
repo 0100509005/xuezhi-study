@@ -3,13 +3,13 @@ const escapeHTML=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<
 const ALL_ITEMS=[...LESSONS,...CHEM_TERM_LESSONS,...EXERCISES];
 const getItem=id=>ALL_ITEMS.find(item=>item.id===id);
 const itemURL=item=>item.studyKind==='chem-point'?`#chem-point/${item.termId}`:`#${item.kind?'exercise':'lesson'}/${item.id}`;
-let state={answers:{},review:[],last:null,chemRead:[],chemFocusLast:null,examAnswers:{},completeExamAnswers:{},examLast:{},mathAnswers:{},mathLast:{},computerTrack:'all',studyMode:'brief',practice:normalizePractice(null)},storageOK=true;
+let state={answers:{},review:[],last:null,chemRead:[],chemFocusLast:null,examAnswers:{},completeExamAnswers:{},examLast:{},mathAnswers:{},mathLast:{},mathCompleteAnswers:{},mathCompleteMistakes:{},computerTrack:'all',studyMode:'brief',practice:normalizePractice(null)},storageOK=true;
 try{
  const saved=JSON.parse(localStorage.getItem('xuezhi-v1')||'null');
  if(saved&&typeof saved==='object'){
   state.answers=saved.answers&&typeof saved.answers==='object'?saved.answers:{};
   state.review=Array.isArray(saved.review)?saved.review.filter(id=>getItem(id)):[];
-  state.studyMode=normalizeStudyMode(saved.studyMode);state.mathAnswers=normalizeMathAnswers(saved.mathAnswers);state.mathLast=normalizeMathLast(saved.mathLast);state.last=saved.last;state.chemFocusLast=normalizeChemFocusLast(saved.chemFocusLast);state.examAnswers=normalizeExamAnswers(saved.examAnswers);state.completeExamAnswers=normalizeCompleteAnswers(saved.completeExamAnswers);state.examLast=normalizeExamLast(saved.examLast);state.chemRead=normalizeChemRead(saved.chemRead);
+  state.studyMode=normalizeStudyMode(saved.studyMode);state.mathAnswers=normalizeMathAnswers(saved.mathAnswers);state.mathLast=normalizeMathLast(saved.mathLast);state.last=saved.last;state.chemFocusLast=normalizeChemFocusLast(saved.chemFocusLast);state.examAnswers=normalizeExamAnswers(saved.examAnswers);state.completeExamAnswers=normalizeCompleteAnswers(saved.completeExamAnswers);state.examLast=normalizeExamLast(saved.examLast);state.chemRead=normalizeChemRead(saved.chemRead);state.mathCompleteAnswers=normalizeMathCompleteAnswers(saved.mathCompleteAnswers);
   state.computerTrack=['all','a','b'].includes(saved.computerTrack)?saved.computerTrack:'all';
   state.practice=normalizePractice(saved.practice);
  }
@@ -33,13 +33,14 @@ function restoreChoiceBankRound(){
 }
 state.choiceBankRound=restoreChoiceBankRound();
 restoreCompleteMistakes();
+restoreMathCompleteMistakes();
 function done(id){const summary=state.practice.summaries[id];return summary?summary.passed:state.answers[id]?.correct===true;}
 function stats(course){if(course==='chemistry')return{total:CHEM_TERM_LESSONS.length,count:state.chemRead.length};const list=LESSONS.filter(l=>l.course===course);return{total:list.length,count:list.filter(l=>done(l.id)).length};}
 function syncNav(){
  const [page,id]=location.hash.slice(1).split('/');
  const key=page==='chem-paper'||page==='chem-drill'?'chem-exams':page==='chem-guide'?'chem-priorities':page==='chem-point'||page==='chem-core'?'chemistry':page==='course'?id:['lesson','exercise'].includes(page)?getItem(id)?.course:page==='practice'?'practice':page==='corrections'?'materials':page||'home';
  document.querySelectorAll('[data-nav]').forEach(a=>a.classList.toggle('active',a.dataset.nav===key));
- $('#reviewCount').textContent=Object.keys(state.choiceMistakes).length+Object.keys(state.completeMistakes||{}).length;
+ $('#reviewCount').textContent=Object.keys(state.choiceMistakes).length+Object.keys(state.completeMistakes||{}).length+Object.keys(state.mathCompleteMistakes||{}).length;
 }
 function save(){try{localStorage.setItem('xuezhi-v1',JSON.stringify(state));}catch{storageOK=false;}syncNav();}
 function shell(body,label='学习总览'){
@@ -120,8 +121,8 @@ function showExercise(id){
 }
 function review(){
  const list=state.review.map(getItem).filter(Boolean).filter(x=>!reviewSubject()||x.course===reviewSubject());
- shell(`<h1>错题集与薄弱点</h1>${subjectReviewLinks()}${webProgressHTML()}${mistakeBankHTML()}${completeMistakeHTML()}<section class="panel"><h2>待巩固知识点</h2>${list.length?list.map(row).join(''):'<p>暂时没有待巩固知识点。</p>'}</section>`,'错题集');
- bindMistakeBank();bindCompleteMistakes();bindWebProgress();
+ shell(`<h1>错题集与薄弱点</h1>${subjectReviewLinks()}${webProgressHTML()}${mistakeBankHTML()}${completeMistakeHTML()}${mathCompleteMistakeHTML()}<section class="panel"><h2>待巩固知识点</h2>${list.length?list.map(row).join(''):'<p>暂时没有待巩固知识点。</p>'}</section>`,'错题集');
+ bindMistakeBank();bindCompleteMistakes();bindMathCompleteMistakes();bindWebProgress();
 }
 /* 网页版没有桌面菜单：进度用浏览器下载与本地文件导入，字段校验与桌面版一致。 */
 function webProgressHTML(){
@@ -163,6 +164,6 @@ function notFound(){shell('<div class="panel empty"><h2>没有找到这个学习
 function route(){
  chemExamDrillRefresh=null;
  const [page,id]=location.hash.slice(1).split('/');window.scrollTo(0,0);
- if(page==='choice-round')showFixedChoiceRound(id);else if(page==='chem-unit-test')chemistryUnitTest();else if(page==='chem-quick')chemistryQuickReview();else if(page==='math-library')mathLibrary(id);else if(page==='math-paper')mathPaper(id);else if(page==='math-drill')mathDrill(id);else if(page==='math-review')mathCourse(id,true);else if(page==='math-focus')showLesson(id,true);else if(page==='chem-exam-review'){if(id)showChemPoint(id,true);else chemistryExamReview();}else if(page==='chem-exams')chemistryExams();else if(page==='chem-paper')chemistryPaper(id);else if(page==='chem-drill')chemistryExamDrill(id);else if(page==='chem-priorities')chemistryReviewPriorities();else if(page==='chem-guide')chemistryGuide(id);else if(page==='chem-point')showChemPoint(id);else if(page==='chem-core')chemistryCourseLegacy();else if(page==='chem-terms')chemistryTerms(id);else if(page==='chem-practice')chemistryPractice();else if(page==='chem-materials')chemistryMaterials(id);else if(page==='chem-answers')chemistryAnswers();else if(page==='chem-notes')chemistryNotes();else if(page==='course')course(id);else if(page==='lesson')showLesson(id);else if(page==='exercise')showExercise(id);else if(page==='practice'&&id==='computer')practice();else if(page==='review')review();else if(page==='materials')materials(id);else if(page==='corrections')corrections();else if(!page||page==='home')home();else notFound();
+ if(page==='choice-round')showFixedChoiceRound(id);else if(page==='chem-unit-test')chemistryUnitTest();else if(page==='chem-quick')chemistryQuickReview();else if(page==='math-library')mathLibrary(id);else if(page==='math-paper')mathPaper(id);else if(page==='math-drill')mathDrill(id);else if(page==='math-complete')mathCompleteDrill(id);else if(page==='math-review')mathCourse(id,true);else if(page==='math-focus')showLesson(id,true);else if(page==='chem-exam-review'){if(id)showChemPoint(id,true);else chemistryExamReview();}else if(page==='chem-exams')chemistryExams();else if(page==='chem-paper')chemistryPaper(id);else if(page==='chem-drill')chemistryExamDrill(id);else if(page==='chem-priorities')chemistryReviewPriorities();else if(page==='chem-guide')chemistryGuide(id);else if(page==='chem-point')showChemPoint(id);else if(page==='chem-core')chemistryCourseLegacy();else if(page==='chem-terms')chemistryTerms(id);else if(page==='chem-practice')chemistryPractice();else if(page==='chem-materials')chemistryMaterials(id);else if(page==='chem-answers')chemistryAnswers();else if(page==='chem-notes')chemistryNotes();else if(page==='course')course(id);else if(page==='lesson')showLesson(id);else if(page==='exercise')showExercise(id);else if(page==='practice'&&id==='computer')practice();else if(page==='review')review();else if(page==='materials')materials(id);else if(page==='corrections')corrections();else if(!page||page==='home')home();else notFound();
 }
 initStudyModeEvents();initChemExamEvents();window.addEventListener('hashchange',route);route();

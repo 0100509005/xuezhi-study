@@ -1,6 +1,12 @@
 /* 期中真题库：已录入真题 + 按真题考法自拟的同难度题，供每日一题与练习溯源使用。 */
 const MATH_EXAM_BANK = [];
-const MATH_DAILY_LEVELS = [{ id: 'all', name: '全部难度' }, { id: '1', name: '基础' }, { id: '2', name: '期中' }, { id: '3', name: '拔高' }];
+const MATH_DAILY_LEVELS = [
+  { id: 'adaptive', name: '智能自适应（做对升档 / 做错降档）' },
+  { id: 'all', name: '全部难度' },
+  { id: '1', name: '基础' },
+  { id: '2', name: '期中' },
+  { id: '3', name: '拔高' }
+];
 
 (function () {
   const paperOf = id => (typeof MATH_PAPERS !== 'undefined' ? MATH_PAPERS.find(p => p.id === id) : null);
@@ -242,6 +248,195 @@ const MATH_DAILY_LEVELS = [{ id: 'all', name: '全部难度' }, { id: '1', name:
     options: ['6', '0', '5', '11'], answer: 0,
     steps: ['行列式等于全部特征值之积。', '|A| = 1 × 2 × 3 = 6。']
   });
+
+  /* —— 期末考点冲刺：补全各题型 L1 基础与 L3 拔高阶梯 —— */
+  /* 高数题型梯度补齐 */
+  add({
+    key: 'c1-base', course: 'calculus', terms: ['sequence'], level: 1, kind: '计算',
+    prompt: '数列 aₙ = (2n + 1)/(3n − 2) 当 n → ∞ 时的极限是？',
+    options: ['2/3', '1/3', '1', '不存在'], answer: 0,
+    steps: ['分子分母同除以最高次项 n。', '原式 = lim (2 + 1/n)/(3 − 2/n) = (2 + 0)/(3 − 0) = 2/3。']
+  });
+  add({
+    key: 'c1-adv', course: 'calculus', terms: ['squeeze', 'limit'], level: 3, kind: '计算',
+    prompt: '求极限 lim(n→∞) [1/√(n² + 1) + 1/√(n² + 2) + ⋯ + 1/√(n² + n)]。',
+    options: ['1', '0', '1/2', '2'], answer: 0,
+    steps: ['每一项放大为 1/√(n² + 1)，缩小为 1/√(n² + n)。', '下界 = n/√(n² + n) = 1/√(1 + 1/n) → 1。', '上界 = n/√(n² + 1) = 1/√(1 + 1/n²) → 1。', '由夹逼定理，原极限为 1。']
+  });
+  add({
+    key: 'c2-adv', course: 'calculus', terms: ['discontinuity', 'continuity-root'], level: 3, kind: '选择',
+    prompt: '方程 x·2ˣ = 1 在区间 (0, 1) 内实根的个数为？',
+    options: ['恰好 1 个', '0 个', '2 个', '无穷多个'], answer: 0,
+    steps: ['设 f(x) = x·2ˣ − 1，f 在 [0, 1] 连续。', '端点值 f(0) = −1 < 0，f(1) = 1 > 0，由零点存在定理在 (0, 1) 至少有 1 个根。', '导数 f′(x) = 2ˣ(1 + x ln 2) > 0（x ∈ (0, 1)），f 严格单调递增，故实根唯一。']
+  });
+  add({
+    key: 'c3-base', course: 'calculus', terms: ['derivative-rules'], level: 1, kind: '计算',
+    prompt: '设 f(x) = ln(x² + 1)，求导数 f′(x)。',
+    options: ['2x/(x² + 1)', '1/(x² + 1)', 'x/(x² + 1)', '2/(x² + 1)'], answer: 0,
+    steps: ['复合函数求导（链式法则）：外层 (ln u)′ = 1/u，内层 u′ = 2x。', '相乘得 f′(x) = 2x/(x² + 1)。']
+  });
+  add({
+    key: 'c3-adv', course: 'calculus', terms: ['implicit', 'differential'], level: 3, kind: '计算',
+    prompt: '曲线 y = f(x) 由 x² + 2xy + y³ = 4 确定，求在点 (1, 1) 处的切线方程。',
+    options: ['4x + 5y − 9 = 0', '4x − 5y + 1 = 0', '2x + 3y − 5 = 0', 'x + y − 2 = 0'], answer: 0,
+    steps: ['两边对 x 求导：2x + 2(y + xy′) + 3y²y′ = 0。', '将 (x, y) = (1, 1) 代入：2 + 2(1 + y′) + 3y′ = 0，解得 y′ = −4/5。', '切线方程为 y − 1 = −4/5(x − 1)，整理得 4x + 5y − 9 = 0。']
+  });
+  add({
+    key: 'c4-base', course: 'calculus', terms: ['lhopital'], level: 1, kind: '计算',
+    prompt: '求未定式极限 lim(x→0) (tan x − x)/x³ 的值。',
+    options: ['1/3', '1/2', '1', '0'], answer: 0,
+    steps: ['x → 0 为 0/0 型，使用泰勒展开。', 'tan x = x + x³/3 + o(x³)，分子为 x³/3 + o(x³)。', '除以 x³ 后极限为 1/3。']
+  });
+  add({
+    key: 'c5-base', course: 'calculus', terms: ['concavity'], level: 1, kind: '计算',
+    prompt: '函数 f(x) = x³ − 3x² 的拐点坐标是？',
+    options: ['(1, −2)', '(0, 0)', '(2, −4)', '(1, 0)'], answer: 0,
+    steps: ['求二阶导数：f′(x) = 3x² − 6x，f″(x) = 6x − 6。', '令 f″(x) = 0 得 x = 1；两侧 f″ 变号，故 x = 1 对应拐点。', '代入原函数得 y = 1 − 3 = −2，拐点为 (1, −2)。']
+  });
+  add({
+    key: 'c5-adv', course: 'calculus', terms: ['asymptote', 'auxiliary-function'], level: 3, kind: '计算',
+    prompt: '曲线 y = (x² + 2x − 1)/(x − 1) 的斜渐近线方程是？',
+    options: ['y = x + 3', 'y = x + 2', 'y = x − 1', 'y = x + 1'], answer: 0,
+    steps: ['多项式除法：(x² + 2x − 1) = (x − 1)(x + 3) + 2。', '即 y = x + 3 + 2/(x − 1)。', '当 x → ±∞ 时，2/(x − 1) → 0，因此斜渐近线为 y = x + 3。']
+  });
+  add({
+    key: 'c6-base', course: 'calculus', terms: ['antiderivative'], level: 1, kind: '计算',
+    prompt: '不定积分 ∫ x/(1 + x²) dx 等于？',
+    options: ['½ ln(1 + x²) + C', 'ln(1 + x²) + C', 'arctan x + C', '2 ln(1 + x²) + C'], answer: 0,
+    steps: ['凑微分：x dx = ½ d(1 + x²)。', '原式 = ½ ∫ 1/(1 + x²) d(1 + x²) = ½ ln(1 + x²) + C。']
+  });
+  add({
+    key: 'c6-area', course: 'calculus', terms: ['integral'], level: 2, kind: '计算',
+    prompt: '抛物线 y = x² 与直线 y = 2x 所围成平面图形的面积为？',
+    options: ['4/3', '2/3', '2', '1'], answer: 0,
+    steps: ['求交点：x² = 2x 得 x = 0 或 x = 2。', '在 [0, 2] 上直线在上，面积 S = ∫₀² (2x − x²) dx。', '= [x² − x³/3]₀² = 4 − 8/3 = 4/3。']
+  });
+  add({
+    key: 'c6-ode2', course: 'calculus', terms: ['ode'], level: 3, kind: '计算',
+    prompt: '微分方程 y″ − 3y′ + 2y = 0 的通解为（C₁、C₂ 为任意常数）？',
+    options: ['y = C₁eˣ + C₂e^(2x)', 'y = C₁e^(−x) + C₂e^(−2x)', 'y = (C₁ + C₂x)eˣ', 'y = C₁ cos x + C₂ sin(2x)'], answer: 0,
+    steps: ['写出特征方程：r² − 3r + 2 = 0，即 (r − 1)(r − 2) = 0。', '特征根为两个不相等的实根：r₁ = 1，r₂ = 2。', '对应的通解为 y = C₁eˣ + C₂e^(2x)。']
+  });
+  add({
+    key: 'c7-base', course: 'calculus', terms: ['partial'], level: 1, kind: '计算',
+    prompt: '设 z = e^(2x + 3y)，求一阶偏导数 ∂z/∂x。',
+    options: ['2e^(2x + 3y)', '3e^(2x + 3y)', 'e^(2x + 3y)', '6e^(2x + 3y)'], answer: 0,
+    steps: ['把 y 视为常数对 x 求导。', '内层 2x + 3y 对 x 的导数为 2，故 ∂z/∂x = 2e^(2x + 3y)。']
+  });
+  add({
+    key: 'c7-adv', course: 'calculus', terms: ['series'], level: 3, kind: '计算',
+    prompt: '幂级数 Σₙ₌₁^∞ (x − 1)ⁿ / (n · 2ⁿ) 的收敛半径 R 为？',
+    options: ['2', '1', '1/2', '4'], answer: 0,
+    steps: ['系数 aₙ = 1 / (n · 2ⁿ)。', '比较相邻比值：lim |aₙ/aₙ₊₁| = lim [(n+1)·2ⁿ⁺¹] / [n·2ⁿ] = 2 · lim (1 + 1/n) = 2。', '所以收敛半径 R = 2。']
+  });
+
+  /* 线代题型梯度补齐 */
+  add({
+    key: 'a1-adv', course: 'algebra', terms: ['vandermonde', 'determinant'], level: 3, kind: '计算',
+    prompt: '设 3 阶范德蒙行列式 D = |1 1 1; x 2 3; x² 4 9| = 0，则实数 x 的所有可能值为？',
+    options: ['2 或 3', '仅 2', '仅 3', '0 或 1'], answer: 0,
+    steps: ['按范德蒙行列式公式：D = (3 − 2)(3 − x)(2 − x) = (3 − x)(2 − x)。', '令 D = 0，解得 x = 2 或 x = 3。']
+  });
+  add({
+    key: 'a2-adv', course: 'algebra', terms: ['adjugate', 'inverse'], level: 3, kind: '计算',
+    prompt: '设 A 是 3 阶方阵，|A| = 2，求 |(A*)*| 的值。',
+    options: ['16', '8', '32', '64'], answer: 0,
+    steps: ['|A*| = |A|^(n−1) = 2² = 4。', '利用伴随矩阵的伴随公式：(A*)* = |A|^(n−2) A = 2¹ A = 2A。', '所以 |(A*)*| = |2A| = 2³|A| = 8 × 2 = 16。']
+  });
+  add({
+    key: 'a3-adv', course: 'algebra', terms: ['basis', 'rank-relations'], level: 3, kind: '计算',
+    prompt: '向量组 α₁ = (1, 2, 3)ᵀ，α₂ = (2, 3, 4)ᵀ，α₃ = (3, 4, t)ᵀ 线性相关，则 t 等于？',
+    options: ['5', '4', '6', '0'], answer: 0,
+    steps: ['3 个 3 维向量线性相关的充要条件是其构成的行列式为 0。', 'det [1 2 3; 2 3 4; 3 4 t] = 0。', '经初等行变换得第 2 行 (1, 1, 1)，第 3 行 (1, 1, t−4)；成比例要求 t − 4 = 1，解得 t = 5。']
+  });
+  add({
+    key: 'a4-base', course: 'algebra', terms: ['homogeneous'], level: 1, kind: '选择',
+    prompt: '齐次线性方程组 Ax = 0 仅有零解的充分必要条件是？',
+    options: ['系数矩阵 A 的列向量组线性无关', '系数矩阵 A 的行向量组线性无关', 'r(A) < 未知数个数 n', '常数项全为 0'], answer: 0,
+    steps: ['Ax = x₁α₁ + ⋯ + xₙαₙ = 0。', '仅有零解等价于不存在非零标量使列向量组合为 0，即列向量组线性无关。']
+  });
+  add({
+    key: 'a4-adv', course: 'algebra', terms: ['inhomogeneous', 'homogeneous'], level: 3, kind: '选择',
+    prompt: '设 η₁、η₂、η₃ 是非齐次方程组 Ax = b 的三个解，r(A) = 3，n = 4。若 η₁ + η₂ = 2η₃，则通解为？',
+    options: ['η₃ + c(η₁ − η₂)', 'η₁ + c(η₂ + η₃)', 'c(η₁ − η₂)', 'η₂ + c(η₁ + η₂)'], answer: 0,
+    steps: ['基础解系向量个数 = n − r(A) = 4 − 3 = 1。', '两个特解之差 η₁ − η₂ 是导出组 Ax = 0 的解向量。', '由条件可知 η₁ − η₂ 可作为基础解系，故通解为特解加导出组通解：η₃ + c(η₁ − η₂)。']
+  });
+  add({
+    key: 'a5-adv', course: 'algebra', terms: ['plane', 'cross'], level: 3, kind: '计算',
+    prompt: '过点 M₀(1, 0, −1) 且同时平行于 a = (2, 1, 1) 和 b = (1, −1, 0) 的平面方程是？',
+    options: ['x + y − 3z − 4 = 0', 'x − y + 3z + 2 = 0', 'x + y + 3z + 2 = 0', '2x + y − z − 3 = 0'], answer: 0,
+    steps: ['法向量 n = a × b = (1, 1, −3)。', '点法式方程：1·(x − 1) + 1·(y − 0) − 3·(z + 1) = 0。', '整理得 x + y − 3z − 4 = 0。']
+  });
+  add({
+    key: 'a6-adv', course: 'algebra', terms: ['symmetric-diagonal', 'orthogonal'], level: 3, kind: '选择',
+    prompt: '设实对称矩阵 A = [[1, 2], [2, 1]]，正交矩阵 Q 使 QᵀAQ 为对角阵，则 Q 可取为？',
+    options: ['[[1/√2, 1/√2], [1/√2, −1/√2]]', '[[1, 0], [0, 1]]', '[[1, 2], [2, 1]]', '[[2, 1], [1, 2]]'], answer: 0,
+    steps: ['特征多项式 (1 − λ)² − 4 = 0，解得 λ₁ = 3，λ₂ = −1。', '对应的单位特征向量分别为 (1/√2, 1/√2)ᵀ 与 (1/√2, −1/√2)ᵀ。', '排成正交矩阵 Q = [[1/√2, 1/√2], [1/√2, −1/√2]]。']
+  });
+  add({
+    key: 'a7-base', course: 'algebra', terms: ['positive-definite'], level: 1, kind: '选择',
+    prompt: '若二次型 f(x₁, x₂, x₃) = x₁² + tx₂² + 2x₃² + 2x₁x₂ 正定，则参数 t 的取值范围是？',
+    options: ['t > 1', 't > 0', 't < 1', 't > 2'], answer: 0,
+    steps: ['二次型矩阵 A = [[1, 1, 0], [1, t, 0], [0, 0, 2]]。', '二阶顺序主子式 Δ₂ = t − 1 > 0，故 t > 1。', '三阶顺序主子式 Δ₃ = 2(t − 1) > 0，同样要求 t > 1。']
+  });
+  add({
+    key: 'a7-adv', course: 'algebra', terms: ['congruence', 'quadratic'], level: 3, kind: '选择',
+    prompt: '二次型 f(x₁, x₂, x₃) = x₁² + 4x₂² + 4x₃² + 2x₁x₂ − 4x₂x₃ 的规范形是？',
+    options: ['y₁² + y₂² + y₃²', 'y₁² + y₂²', 'y₁² − y₂² + y₃²', 'y₁² + y₂² − y₃²'], answer: 0,
+    steps: ['配方得 (x₁ + x₂)² + 3(x₂ − ⅔x₃)² + ⁸⁄₃x₃²。', '正惯性指数 p = 3，负惯性指数 q = 0。', '故规范形为 y₁² + y₂² + y₃²。']
+  });
+  add({
+    key: 'a8-adv', course: 'algebra', terms: ['surface'], level: 3, kind: '选择',
+    prompt: '方程 x² + 2y² − 3z² = 0 表示的空间曲面是？',
+    options: ['椭圆锥面', '单叶双曲面', '双叶双曲面', '双曲柱面'], answer: 0,
+    steps: ['三个二次项两正一负，且常数项为 0。', '这是顶点在原点的二次锥面（椭圆锥面）标准方程。']
+  });
+
+
+  /* 3. 从历年卷抽取的选择题：按题干关键词归入章节，作为真题池 */
+  (function () {
+    if (typeof MATH_PAPER_QUESTIONS === 'undefined') return;
+    const CHAPTERS = course => ((typeof MATH_STUDY_ORDER !== 'undefined' && MATH_STUDY_ORDER[course]) || []).map(([c]) => c);
+    const RULES = {
+      calculus: [
+        [/极限|数列|收敛|无穷小|等价|夹逼|洛必达|连续|间断/, 0],
+        [/连续|间断|零点|一致连续/, 1],
+        [/导数|可导|微分|切线|隐函数|高阶导/, 2],
+        [/中值|罗尔|泰勒|拉格朗日|柯西/, 3],
+        [/单调|极值|凹|凸|拐点|渐近线/, 4],
+        [/积分|原函数|微分方程/, 5],
+        [/偏导|二重积分|级数|多元/, 6]
+      ],
+      algebra: [
+        [/行列式|余子式|代数余子式|范德蒙|克莱姆/, 0],
+        [/矩阵|逆|伴随|秩|初等|分块|迹/, 1],
+        [/向量|点积|叉积|投影|线性相关|基/, 2],
+        [/方程组|解系|通解|特解/, 3],
+        [/平面|直线|空间|距离|对称/, 4],
+        [/特征值|特征向量|对角化|正交/, 5],
+        [/二次型|正定|合同|惯性/, 6],
+        [/曲面|椭球|双曲|抛物/, 7]
+      ]
+    };
+    for (const q of MATH_PAPER_QUESTIONS) {
+      const chapters = CHAPTERS(q.course);
+      const rule = (RULES[q.course] || []).find(([re]) => re.test(q.prompt));
+      if (!rule || !chapters[rule[1]]) continue;
+      MATH_EXAM_BANK.push({
+        id: 'paper-' + q.id,
+        course: q.course,
+        terms: [],
+        chapter: chapters[rule[1]],
+        level: 2,
+        kind: '选择',
+        source: { mode: 'paper', year: q.year, page: q.page, answerPage: null, number: q.number, label: `${q.year} 期中 · ${q.number}（原卷转录）` },
+        prompt: q.prompt,
+        options: [...q.options],
+        answer: q.answer,
+        steps: ['本题为原卷文字转录，完整推导见解析册对应页。']
+      });
+    }
+  })();
 
   /* 按日期稳定打乱，同一天同一题型取到同一题。 */
   MATH_EXAM_BANK.forEach((item, index) => {
